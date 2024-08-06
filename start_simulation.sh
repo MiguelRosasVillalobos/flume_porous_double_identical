@@ -49,6 +49,7 @@ for ((i = 1; i <= $cantidad; i++)); do
 	sed -i "s/\$i/$i/g" "$nombre_carpeta/extract_freesurface_plane.py"
 	sed -i "s/\$i/$i/g" "$nombre_carpeta/extractor.py"
 	sed -i "s/\$nn/$n/g" "$nombre_carpeta/constant/porosityProperties"
+	sed -i "s/\$nn/$n/g" "$nombre_carpeta/system/setFields"
 
 	#Generar mallado gmsh
 	cd "$nombre_carpeta/"
