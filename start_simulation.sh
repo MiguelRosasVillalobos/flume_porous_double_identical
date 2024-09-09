@@ -37,12 +37,6 @@ for ((i = 1; i <= $cantidad; i++)); do
   ddir=$(pwd)
   sed -i "s|\$ddir|$ddir|g" "./$nombre_carpeta/extract_freesurface_plane.py"
 
-  # Copia un archivo dentro de la carpeta
-  archivo_geo="Case_0/flume.geo"
-  archivo_geoi="flume_Case_$i.geo"
-  touch "$archivo_geo"
-  cp "$archivo_geo" "$nombre_carpeta/$archivo_geoi"
-
   # Realiza el intercambio en el archivo
   valor_a="${valores_a[i - 1]}"
   sed -i "s/\$aa/$valor_a/g" "$nombre_carpeta/system/setFieldsDict"
@@ -52,27 +46,12 @@ for ((i = 1; i <= $cantidad; i++)); do
   sed -i "s/\$nn/$n/g" "$nombre_carpeta/constant/porosityProperties"
   sed -i "s/\$nn/$n/g" "$nombre_carpeta/system/setFieldsDict"
 
-  #Generar mallado gmsh
   cd "$nombre_carpeta/"
-  gmsh "$archivo_geoi" -3
 
-  #Genera mallado OpenFoam
-  gmshToFoam "flume_Case_$i.msh"
-
-  #Lineas a eliminar en polymesh/bondary
-  lineas_eliminar=("24" "30" "36" "42" "48" "54")
-
-  #Itera sobre las líneas a eliminar y utiliza sed para quitarlas
-  for numero_linea in "${lineas_eliminar[@]}"; do
-    sed -i "${numero_linea}d" "constant/polyMesh/boundary"
-  done
-
-  # Reemplaza "patch" por "wall"
-  sed -i '29s/patch/wall/; 35s/patch/wall/ ' "constant/polyMesh/boundary"
-  sed -i '23s/patch/empty/ ' "constant/polyMesh/boundary"
+  blockMesh
   setFields
   decomposePar
-  mpirun -np 8 interIsoFoam -parallel >log
+  mpirun -np 6 interIsoFoam -parallel >log
   kitty --hold -e bash -c "./extract_freesurface.sh && python3 extractor.py && rm -r ./proce*; exec bash" &
   cd ..
 done
