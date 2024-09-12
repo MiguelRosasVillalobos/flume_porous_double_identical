@@ -5,8 +5,8 @@ a = $aa
 # Cargar los archivos
 file_paths = [
     "data2.csv",
-    "data2.07549.csv",
-    "data2.15098.csv"
+    "data2.137.csv",
+    "data2.274.csv"
 ]
 
 # Extraer solo la segunda columna de cada archivo y usarla para formar un nuevo DataFrame con tres columnas
