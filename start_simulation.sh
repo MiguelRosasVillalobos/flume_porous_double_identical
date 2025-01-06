@@ -2,8 +2,9 @@
 #Miguel Rosas
 
 # Lista de valores para a
-valores_a=("0" "0.05" "0.07" "0.25" "0.3" "0.42" "0.435" "0.6" "0.7" "0.8" "0.82" "1" "1.088" "1.17" "1.18" "1.2" "1.4" "1.56" "1.58" "1.8")
+# valores_a=("0" "0.05" "0.07" "0.25" "0.3" "0.42" "0.435" "0.6" "0.7" "0.8" "0.82" "1" "1.088" "1.17" "1.18" "1.2" "1.4" "1.56" "1.58" "1.8")
 # valores_a=("0.025" "0.06" "0.16" "0.275" "0.36" "0.4275" "0.5175" "0.65" "0.75" "0.81" "0.91" "1.044" "1.129" "1.19" "1.3" "1.48" "1.57" "1.69")
+valores_a=("0" "0.09474" "0.18947" "0.28421" "0.37895" "0.47368" "0.56842" "0.66316" "0.75789" "0.85263" "0.94737" "1.04211" "1.13684" "1.23158" "1.32632" "1.42105" "1.51579" "1.61053" "1.70526" "1.8")
 
 # Leer valores desde el archivo parametros.txt
 n=$(grep -oP 'n\s*=\s*\K[\d.+-]+' parameters.txt)
@@ -51,8 +52,8 @@ for ((i = 1; i <= $cantidad; i++)); do
   blockMesh
   setFields
   decomposePar
-  mpirun -np 6 interIsoFoam -parallel >log
-  kitty --hold -e bash -c "./extract_freesurface.sh && python3 extractor.py && rm -r ./proce*; exec bash" &
+  mpirun -np 9 interIsoFoam -parallel >log
+  terminal --hold -e bash -c "./extract_freesurface.sh && python3 extractor.py && rm -r ./proce*; exec bash" &
   cd ..
 done
 
